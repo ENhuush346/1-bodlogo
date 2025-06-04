@@ -1,36 +1,59 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-public class Solution2 {
+class Result {
 
     public static int sherlockAndAnagrams(String s) {
-        Map<String, Integer> freq = new HashMap<>();
-        int n = s.length();
+        Map<String, Integer> substrCount = new HashMap<>();
+        int totalPairs = 0;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j <= n; j++) {
-                char[] sub = s.substring(i, j).toCharArray();
-                Arrays.sort(sub);
-                String key = new String(sub);
-                freq.put(key, freq.getOrDefault(key, 0) + 1);
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + 1; j <= s.length(); j++) {
+                char[] chars = s.substring(i, j).toCharArray();
+                Arrays.sort(chars);
+                String key = new String(chars);
+                substrCount.put(key, substrCount.getOrDefault(key, 0) + 1);
             }
         }
 
-        int count = 0;
-        for (int val : freq.values()) {
-            count += val * (val - 1) / 2;
+        for (int count : substrCount.values()) {
+            totalPairs += count * (count - 1) / 2;
         }
 
-        return count;
+        return totalPairs;
     }
+}
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int q = scanner.nextInt();
-        scanner.nextLine();
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
 
-        for (int t = 0; t < q; t++) {
-            String s = scanner.nextLine();
-            System.out.println(sherlockAndAnagrams(s));
-        }
+        int q = Integer.parseInt(bufferedReader.readLine().trim());
+
+        IntStream.range(0, q).forEach(qItr -> {
+            try {
+                String s = bufferedReader.readLine();
+
+                int result = Result.sherlockAndAnagrams(s);
+
+                bufferedWriter.write(String.valueOf(result));
+                bufferedWriter.newLine();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        bufferedReader.close();
+        bufferedWriter.close();
     }
 }
