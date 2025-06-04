@@ -1,30 +1,30 @@
 import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
 import java.util.stream.*;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 class Result {
-
     public static List<Integer> cutTheSticks(List<Integer> arr) {
         List<Integer> result = new ArrayList<>();
         Collections.sort(arr);
-
-        while (!arr.isEmpty()) {
-            result.add(arr.size());
-            int min = arr.get(0);
-            List<Integer> temp = new ArrayList<>();
-            for (int stick : arr) {
-                int reduced = stick - min;
-                if (reduced > 0) {
-                    temp.add(reduced);
-                }
+        
+        int i = 0;
+        while (i < arr.size()) {
+            result.add(arr.size() - i);
+            int current = arr.get(i);
+            while (i < arr.size() && arr.get(i) == current) {
+                i++;
             }
-            arr = temp;
         }
         return result;
     }
-
 }
 
 public class Solution {
