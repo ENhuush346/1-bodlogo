@@ -2,7 +2,7 @@
 
 🔗 [HackerRank бодлого](https://www.hackerrank.com/challenges/cut-the-sticks)  
 🟡 Difficulty: Medium  
-📂 Директор: `05-cut-the-sticks`
+📂 Директор: `5-cut-the-sticks`
 
 ## Бодлогын утга
 
