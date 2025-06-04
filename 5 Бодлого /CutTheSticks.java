@@ -1,33 +1,53 @@
+import java.io.*;
 import java.util.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-public class CutTheSticks {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = scanner.nextInt();
-        }
-        scanner.close();
+class Result {
 
-        List<Integer> sticks = new ArrayList<>();
-        for (int length : arr) {
-            sticks.add(length);
-        }
+    public static List<Integer> cutTheSticks(List<Integer> arr) {
+        List<Integer> result = new ArrayList<>();
+        Collections.sort(arr);
 
-        while (!sticks.isEmpty()) {
-            int min = Collections.min(sticks);
-            int count = 0;
-            for (Iterator<Integer> iterator = sticks.iterator(); iterator.hasNext(); ) {
-                int stick = iterator.next();
-                if (stick > min) {
-                    iterator.remove();
-                    iterator = sticks.iterator();
-                } else {
-                    count++;
+        while (!arr.isEmpty()) {
+            result.add(arr.size());
+            int min = arr.get(0);
+            List<Integer> temp = new ArrayList<>();
+            for (int stick : arr) {
+                int reduced = stick - min;
+                if (reduced > 0) {
+                    temp.add(reduced);
                 }
             }
-            System.out.println(sticks.size());
+            arr = temp;
         }
+        return result;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        List<Integer> result = Result.cutTheSticks(arr);
+
+        bufferedWriter.write(
+            result.stream()
+                .map(Object::toString)
+                .collect(joining("\n"))
+            + "\n"
+        );
+
+        bufferedReader.close();
+        bufferedWriter.close();
     }
 }
