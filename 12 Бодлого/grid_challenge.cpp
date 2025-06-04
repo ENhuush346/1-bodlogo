@@ -5,7 +5,7 @@ using namespace std;
 string ltrim(const string &);
 string rtrim(const string &);
 string gridChallenge(vector<string> grid) {
-    // Мөр бүрийг үсгийн дарааллаар эрэмбэлнэ
+
     for (auto &row : grid) {
         sort(row.begin(), row.end());
     }
@@ -13,7 +13,7 @@ string gridChallenge(vector<string> grid) {
     int rows = grid.size();
     int cols = grid[0].size();
 
-    // Багануудыг дээшээс доош шалгана
+
     for (int col = 0; col < cols; col++) {
         for (int row = 1; row < rows; row++) {
             if (grid[row][col] < grid[row - 1][col]) {
