@@ -1,46 +1,81 @@
+import java.io.*;
 import java.util.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-public class FindTheRunningMedian {
-    private PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-    private PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+class Result {
 
-    public void addNumber(int num) {
-        if (maxHeap.isEmpty() || num <= maxHeap.peek()) {
-            maxHeap.offer(num);
-        } else {
-            minHeap.offer(num);
+    public static List<Double> runningMedian(List<Integer> a) {
+        List<Double> medians = new ArrayList<>();
+        PriorityQueue<Integer> lowers = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> highers = new PriorityQueue<>();
+        for (int number : a) {
+            addNumber(number, lowers, highers);
+            rebalance(lowers, highers);
+            medians.add(getMedian(lowers, highers));
         }
 
-        // Хоёр heap-ийн хэмжээг тэнцвэржүүлэх
-        if (maxHeap.size() - minHeap.size() > 1) {
-            minHeap.offer(maxHeap.poll());
-        } else if (minHeap.size() - maxHeap.size() > 1) {
-            maxHeap.offer(minHeap.poll());
+        return medians;
+    }
+
+    private static void addNumber(int number, PriorityQueue<Integer> lowers, PriorityQueue<Integer> highers) {
+        if (lowers.isEmpty() || number < lowers.peek()) {
+            lowers.add(number);
+        } else {
+            highers.add(number);
         }
     }
 
-    public double getMedian() {
-        if (maxHeap.size() == minHeap.size()) {
-            return (maxHeap.peek() + minHeap.peek()) / 2.0;
-        } else if (maxHeap.size() > minHeap.size()) {
-            return maxHeap.peek();
-        } else {
-            return minHeap.peek();
+    private static void rebalance(PriorityQueue<Integer> lowers, PriorityQueue<Integer> highers) {
+        PriorityQueue<Integer> biggerHeap = lowers.size() > highers.size() ? lowers : highers;
+        PriorityQueue<Integer> smallerHeap = lowers.size() > highers.size() ? highers : lowers;
+
+        if (biggerHeap.size() - smallerHeap.size() >= 2) {
+            smallerHeap.add(biggerHeap.poll());
         }
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+    private static double getMedian(PriorityQueue<Integer> lowers, PriorityQueue<Integer> highers) {
+        PriorityQueue<Integer> biggerHeap = lowers.size() > highers.size() ? lowers : highers;
+        PriorityQueue<Integer> smallerHeap = lowers.size() > highers.size() ? highers : lowers;
 
-        FindTheRunningMedian medianFinder = new FindTheRunningMedian();
-
-        for (int i = 0; i < n; i++) {
-            int num = sc.nextInt();
-            medianFinder.addNumber(num);
-            System.out.printf("%.1f\n", medianFinder.getMedian());
+        if (biggerHeap.size() == smallerHeap.size()) {
+            return ((double) biggerHeap.peek() + smallerHeap.peek()) / 2;
+        } else {
+            return (double) biggerHeap.peek();
         }
+    }
+}
 
-        sc.close();
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int aCount = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<Integer> a = IntStream.range(0, aCount).mapToObj(i -> {
+            try {
+                return bufferedReader.readLine().replaceAll("\\s+$", "");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        })
+            .map(String::trim)
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        List<Double> result = Result.runningMedian(a);
+
+        bufferedWriter.write(
+            result.stream()
+                .map(Object::toString)
+                .collect(joining("\n"))
+            + "\n"
+        );
+
+        bufferedReader.close();
+        bufferedWriter.close();
     }
 }
