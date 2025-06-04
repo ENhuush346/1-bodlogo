@@ -1,40 +1,36 @@
-📁 01-sherlock-and-anagrams/
-🔗 https://www.hackerrank.com/challenges/sherlock-and-anagrams
+✅ 1. Balanced Brackets
+🔗 Balanced Brackets – HackerRank
+🟡 Difficulty: Medium
+📂 Директор нэр: 01-balanced-brackets
 
-🟡 Medium
+🧠 Бодлогын утга:
+Өгөгдсөн [], {}, () зэрэг хаалт агуулсан текстийн мөр нь зөв тэнцвэртэй (balanced) эсэхийг шалгана. Жишээлбэл:
 
-✨ Бүрэн шийдэл: SherlockAndAnagrams.java + README.md
+{[()]} – тэнцвэртэй ✅
 
-📁 02-maximum-subarray/
-🔗 https://www.hackerrank.com/challenges/maxsubarray
+{[(])} – тэнцвэргүй ❌
+# Balanced Brackets
 
-🟡 Medium
+🔗 [HackerRank бодлого](https://www.hackerrank.com/challenges/balanced-brackets)  
+🟡 Difficulty: Medium  
+📂 Директор: `01-balanced-brackets`
 
-✨ Шийдэл: хоёр array-г ашиглаж subarray болон subsequence-г олно.
+## Бодлогын утга:
 
-📁 03-count-triplets/
-🔗 https://www.hackerrank.com/challenges/count-triplets-1
+Өгөгдсөн `{}, (), []` зэрэг хаалт бүхий текстийн мөр нь тэнцвэртэй эсэхийг шалгана.
 
-🟡 Medium
+## Жишээ:
 
-✨ Шийдэл: HashMap 2 ширхэг ашиглан a*r = b, b*r = c гэсэн хэлбэрээр бодно.
+| Оролт       | Гаралт |
+|-------------|--------|
+| {[()]}      | YES    |
+| {[(])}      | NO     |
+| {{[[(())]]}}| YES    |
 
-📁 04-merge-sort-counting-inversions/
-🔗 https://www.hackerrank.com/challenges/ctci-merge-sort
+## Шийдэл:
 
-🔴 Hard
+Stack өгөгдлийн бүтэц ашиглан эхлээд нээгдсэн хаалтыг хадгалж, дараа нь тухайн хаагдаж буй хаалтуудтай тулган шалгана. Stack нь LIFO зарчмаар ажилладаг тул хамгийн сүүлд нэмсэн элементийг хамгийн түрүүнд авна.
 
-✨ Шийдэл: Merge sort ашиглан inversion-уудыг тоолно.
-hackerrank-algo-ds/
-├── 01-sherlock-and-anagrams/
-│   ├── SherlockAndAnagrams.java
-│   └── README.md
-├── 02-maximum-subarray/
-│   ├── MaximumSubarray.java
-│   └── README.md
-├── 03-count-triplets/
-│   ├── CountTriplets.java
-│   └── README.md
-├── 04-merge-sort-counting-inversions/
-│   ├── MergeSortInversions.java
-│   └── README.md
+## Нотолгоо:
+
+Бүх тестүүдийг амжилттай давсан бөгөөд HackerRank системээс "All test cases passed" хариу ирсэн.
