@@ -37,33 +37,67 @@
 
 ---
 
-## 🧮 Код (Python)
+## 🧮 Код (java)
 
-```python
-def freqQuery(queries):
-    freq = {}
-    freqCount = {}
-    result = []
 
-    for op, val in queries:
-        if op == 1:
-            old_freq = freq.get(val, 0)
-            new_freq = old_freq + 1
-            freq[val] = new_freq
 
-            freqCount[old_freq] = freqCount.get(old_freq, 0) - 1 if old_freq > 0 else freqCount.get(old_freq, 0)
-            freqCount[new_freq] = freqCount.get(new_freq, 0) + 1
+import java.util.*;
 
-        elif op == 2:
-            old_freq = freq.get(val, 0)
-            if old_freq > 0:
-                new_freq = old_freq - 1
-                freq[val] = new_freq
+public class Solution {
+    public static List<Integer> freqQuery(List<List<Integer>> queries) {
+        Map<Integer, Integer> freq = new HashMap<>();         // value -> frequency
+        Map<Integer, Integer> freqCount = new HashMap<>();    // frequency -> count of numbers
+        List<Integer> result = new ArrayList<>();
 
-                freqCount[old_freq] = freqCount.get(old_freq, 0) - 1
-                freqCount[new_freq] = freqCount.get(new_freq, 0) + 1
+        for (List<Integer> query : queries) {
+            int op = query.get(0);
+            int val = query.get(1);
 
-        else:
-            result.append(1 if freqCount.get(val, 0) > 0 else 0)
+            if (op == 1) {
+                int oldFreq = freq.getOrDefault(val, 0);
+                int newFreq = oldFreq + 1;
 
-    return result
+                freq.put(val, newFreq);
+
+                // Update frequency count map
+                freqCount.put(oldFreq, freqCount.getOrDefault(oldFreq, 0) - 1);
+                freqCount.put(newFreq, freqCount.getOrDefault(newFreq, 0) + 1);
+
+            } else if (op == 2) {
+                int oldFreq = freq.getOrDefault(val, 0);
+                if (oldFreq > 0) {
+                    int newFreq = oldFreq - 1;
+
+                    freq.put(val, newFreq);
+
+                    // Update frequency count map
+                    freqCount.put(oldFreq, freqCount.getOrDefault(oldFreq, 0) - 1);
+                    freqCount.put(newFreq, freqCount.getOrDefault(newFreq, 0) + 1);
+                }
+
+            } else if (op == 3) {
+                result.add(freqCount.getOrDefault(val, 0) > 0 ? 1 : 0);
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        List<List<Integer>> queries = Arrays.asList(
+            Arrays.asList(1, 5),
+            Arrays.asList(1, 6),
+            Arrays.asList(3, 2),
+            Arrays.asList(1, 10),
+            Arrays.asList(1, 10),
+            Arrays.asList(1, 6),
+            Arrays.asList(2, 5),
+            Arrays.asList(3, 2)
+        );
+
+        List<Integer> result = freqQuery(queries);
+        for (int res : result) {
+            System.out.println(res);
+        }
+    }
+}
