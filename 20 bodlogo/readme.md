@@ -29,3 +29,41 @@
 
 🔵 `3 z` үед:
 - Хэрвээ `z` давтамжтай тоо байвал `1`, үгүй бол `0`.
+
+### 📝 Тайлбар:
+
+- 3-р мөр дээр 2 удаа давтагдсан тоо байхгүй → `0`
+- 8-р мөр дээр 2 удаа давтагдсан `6`, `10` байна → `1`
+
+---
+
+## 🧮 Код (Python)
+
+```python
+def freqQuery(queries):
+    freq = {}
+    freqCount = {}
+    result = []
+
+    for op, val in queries:
+        if op == 1:
+            old_freq = freq.get(val, 0)
+            new_freq = old_freq + 1
+            freq[val] = new_freq
+
+            freqCount[old_freq] = freqCount.get(old_freq, 0) - 1 if old_freq > 0 else freqCount.get(old_freq, 0)
+            freqCount[new_freq] = freqCount.get(new_freq, 0) + 1
+
+        elif op == 2:
+            old_freq = freq.get(val, 0)
+            if old_freq > 0:
+                new_freq = old_freq - 1
+                freq[val] = new_freq
+
+                freqCount[old_freq] = freqCount.get(old_freq, 0) - 1
+                freqCount[new_freq] = freqCount.get(new_freq, 0) + 1
+
+        else:
+            result.append(1 if freqCount.get(val, 0) > 0 else 0)
+
+    return result
